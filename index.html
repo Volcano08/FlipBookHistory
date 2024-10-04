@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leather Bound Flipbook - SSUSH11</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Dancing Script', cursive;
+            background-color: #f4f4f4;
+        }
+
+        .flipbook {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 2000px;
+            background: radial-gradient(circle, rgba(184, 133, 77, 0.5), rgba(115, 85, 54, 0.9));
+        }
+
+        .cover {
+            position: absolute;
+            width: 80%;
+            height: 80vh;
+            background: linear-gradient(135deg, #8b4513, #5a3310);
+            box-shadow: inset 0 0 10px #4e3b31, 0 10px 20px rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            color: #fff;
+            text-align: center;
+            transform: rotateY(0deg);
+            transform-origin: left;
+            transition: transform 1s ease;
+        }
+
+        .inside-cover {
+            background: linear-gradient(135deg, #a57e5f, #e2c8b7);
+            color: #4e3b31;
+        }
+
+        .page {
+            position: absolute;
+            width: 80%;
+            height: 80vh;
+            background: linear-gradient(to bottom, #e8e2d8, #dcd6c9);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            transform-origin: left;
+            transition: transform 1s ease;
+            display: none;
+            backface-visibility: hidden;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .page.flip-left {
+            transform: rotateY(-180deg);
+        }
+
+        .cover.flip-left {
+            transform: rotateY(-180deg);
+        }
+
+        .front {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .front h2 {
+            font-size: 3em;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .front img {
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .front img:hover {
+            transform: scale(1.1);
+        }
+
+        .front p {
+            font-size: 1.8em;
+            line-height: 1.4;
+            color: #555;
+        }
+
+        .impact {
+            font-size: 1.5em;
+            line-height: 1.4;
+            color: #333;
+            margin-top: 15px;
+        }
+
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.5em;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+            color: #333;
+            transition: color 0.2s ease;
+        }
+
+        .nav-button:hover {
+            color: #000;
+        }
+
+        .left-arrow {
+            left: 2%;
+        }
+
+        .right-arrow {
+            right: 2%;
+        }
+
+        .dropdown-nav {
+            position: absolute;
+            bottom: 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .dropdown-nav select {
+            padding: 10px;
+            font-size: 1.2em;
+            border-radius: 5px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .modal img {
+            width: 100%;
+            height: auto;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 40px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        @media screen and (max-width: 768px) {
+            .front h2 {
+                font-size: 2.5em;
+            }
+
+            .front img {
+                width: 100px;
+                height: 100px;
+            }
+
+            .front p {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="flipbook">
+        <div class="cover" id="cover">SSUSH11</div>
+
+        <div class="page" id="page1">
+            <div class="front">
+                <h2>Gilded Age</h2>
+                <img src="Images/Guilded Age.png" alt="Image Placeholder" onclick="enlargeImage(this)">
+                <p> A period in the late 19th century (1870s-1900) marked by rapid industrialization, economic growth, and immense wealth for some, but also significant social inequalities and political corruption.</p>
+                <p class="impact">This era saw the rise of powerful industrialists and monopolies, leading to a wealth gap between the rich and poor, alongside movements for reform and labor rights.</p>
+            </div>
+        </div>
+
+        <div class="page" id="page2">
+            <div class="front">
+                <h2>John D. Rockefeller (Standard Oil Company)</h2>
+                <img src="Images/Rockerfeller.png" alt="Image Placeholder" onclick="enlargeImage(this)">
+                <p>Rockefeller was the founder of Standard Oil, which became a massive monopoly in the oil industry, controlling nearly all oil refining in the U.S. by the late 1800s.</p>
+                <p class="impact">He became one of the richest men in history, and his company’s practices led to public outcry and the eventual breakup of Standard Oil under antitrust laws.</p>
+            </div>
+        </div>
+
+        <div class="page" id="page3">
+            <div class="front">
+                <h2>Andrew Carnegie (U.S. Steel Company)</h2>
+                <img src="Images/Carnegie.png" alt="Image Placeholder" onclick="enlargeImage(this)">
+                <p>Carnegie was a steel tycoon whose company, U.S. Steel, dominated the steel industry, making him one of the wealthiest men of his time.</p>
+                <p class="impact">Carnegie's dominance in the steel industry contributed to America's rapid industrial growth and his later philanthropic efforts shaped U.S. education and culture.</p>
+            </div>
+        </div>
+
+        <div class="page" id="page4">
+            <div class="front">
+                <h2>Monopoly</h2>
+                <img src="Images/Monoply.png" alt="Image Placeholder" onclick="enlargeImage(this)">
+                <p>A monopoly is when a single company or group controls all or nearly all of a particular market or industry, limiting competition.</p>
+                <p class="impact">Monopolies were common during the Gilded Age, leading to public backlash and the eventual passage of antitrust laws to promote competition.</p>
+            </div>
+        </div>
+
+        <div class="page" id="page5">
+            <div class="front">
+                <h2>Vertical Integration and Horizontal Integration</h2>
+                <img src="Images/Vert and Horz Inegration.png" alt="Image Placeholder" onclick="enlargeImage(this)">
+                <p>Vertical integration is when a company controls all stages of production, while horizontal integration involves merging with or acquiring competitors in the same industry.</p>
+                <p class="impact">These strategies were used by tycoons like Carnegie and Rockefeller to dominate their industries and limit competition, contributing to the rise of monopolies.</p>
+            </div>
+        </div>
+
+        <div class="page" id="page6">
+            <div class="front">
+                <h2>American Federation of Labor</h2>
+                <img src="Images/AFL.png" alt="Image Placeholder" onclick="enlargeImage(this)">
+                <p>Founded in 1886, the AFL was a national federation of labor unions focused on improving wages, hours, and working conditions for skilled workers.</p>
+                <p class="impact">The AFL played a key role in advancing the labor movement in the U.S., securing better labor conditions for skilled workers during a time of widespread exploitation.</p>
+            </div>
+        </div>
+
+        <div class="page" id="page7">
+            <div class="front">
+                <h2>Samuel Gompers</h2>
+                <img src="Images/Gompers.png" alt="Image Placeholder" onclick="enlargeImage(this)">
+                <p> Gompers was the founder and longtime leader of the American Federation of Labor, advocating for workers' rights through organized labor.</p>
+                <p class="impact">His leadership helped establish labor unions as a force for improving wages, hours, and working conditions in an industrializing America.</p>
+            </div>
+        </div>
+
+        <div class="page" id="page8">
+            <div class="front">
+                <h2>Ellis Island and Angel Island</h2>
+                <img src="Images/Islands.png" alt="Image Placeholder" onclick="enlargeImage(this)">
+                <p>Ellis Island (East Coast) and Angel Island (West Coast) were major immigration processing stations where millions of immigrants entered the U.S. in the late 19th and early 20th centuries.</p>
+                <p class="impact">These stations processed millions of immigrants, shaping the demographic and cultural makeup of the United States during the industrial era.</p>
+            </div>
+        </div>
+
+        <div class="page" id="page9">
+            <div class="front">
+                <h2>Nativism</h2>
+                <img src="Images/Nativism.png" alt="Image Placeholder" onclick="enlargeImage(this)">
+                <p>Nativism is the policy of protecting the interests of native-born citizens against those of immigrants, often accompanied by anti-immigrant sentiment.</p>
+                <p class="impact">Nativist movements led to restrictions on immigration, including laws like the Chinese Exclusion Act, reflecting widespread fear of job competition and cultural change.</p>
+            </div>
+        </div>
+
+        <div class="page" id="page10">
+            <div class="front">
+                <h2>Chinese Exclusion Act</h2>
+                <img src="Images/Exclusion.png" alt="Image Placeholder" onclick="enlargeImage(this)">
+                <p> A U.S. federal law passed in 1882 that banned Chinese immigration and prevented Chinese immigrants already in the country from becoming citizens.</p>
+                <p class="impact">The act was a significant moment in U.S. immigration policy, marking the first time the country enacted a law to exclude a specific ethnic group from immigrating.</p>
+            </div>
+        </div>
+
+        <button class="nav-button left-arrow" id="leftArrow" onclick="prevPage()">&#9664;</button>
+        <button class="nav-button right-arrow" id="rightArrow" onclick="nextPage()">&#9654;</button>
+
+        <div class="dropdown-nav">
+            <select id="bookDropdown" onchange="changeBook(this.value)">
+                <option value="main">SSUSH11</option>
+                <option value="sub1">SSUSH12</option>
+                <option value="sub2">SSUSH13</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Modal for image enlargement -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="Enlarged Image">
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 0;
+        const totalPages = 10;
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                if (currentPage === 0) {
+                    document.getElementById('cover').classList.add('flip-left');
+                    document.getElementById('cover').classList.add('inside-cover');
+                    document.getElementById('page1').classList.add('active');
+                } else if (currentPage > 0 && currentPage < totalPages) {
+                    document.getElementById('page' + currentPage).classList.add('flip-left');
+                    document.getElementById('page' + (currentPage + 1)).classList.add('active');
+                }
+                currentPage++;
+                updateArrows();
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 0) {
+                if (currentPage === 1) {
+                    document.getElementById('cover').classList.remove('flip-left');
+                    document.getElementById('cover').classList.remove('inside-cover');
+                    document.getElementById('page1').classList.remove('active');
+                } else if (currentPage > 1) {
+                    document.getElementById('page' + (currentPage - 1)).classList.remove('flip-left');
+                    document.getElementById('page' + currentPage).classList.remove('active');
+                }
+                currentPage--;
+                updateArrows();
+            }
+        }
+
+        function updateArrows() {
+            document.getElementById('leftArrow').style.display = currentPage === 0 ? 'none' : 'block';
+            document.getElementById('rightArrow').style.display = currentPage === totalPages ? 'none' : 'block';
+        }
+
+        function changeBook(book) {
+            const bookDropdown = document.getElementById('bookDropdown');
+            bookDropdown.value = 'main';  // Dynamically show SSUSH11 on load
+
+            if (book === 'sub1') {
+                window.location.href = 'Sites/SSUSH12/SSUSH12.html';
+            } else if (book === 'sub2') {
+                window.location.href = 'Sites/SSUSH13/SSUSH13.html';
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                nextPage();
+            } else if (e.key === 'ArrowLeft') {
+                prevPage();
+            }
+        });
+
+        window.onload = () => {
+            document.getElementById('cover').classList.add('active');
+            updateArrows();
+        };
+
+        function enlargeImage(img) {
+            document.getElementById('modalImage').src = img.src;
+            document.getElementById('imageModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+    </script>
+
+</body>
+
+</html>

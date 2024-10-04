@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leather Bound Flipbook - SSUSH13</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Dancing Script', cursive;
+            background-color: #f4f4f4;
+        }
+
+        .flipbook {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 2000px;
+            background: radial-gradient(circle, rgba(184, 133, 77, 0.5), rgba(115, 85, 54, 0.9));
+            position: relative;
+        }
+
+        .cover {
+            position: absolute;
+            width: 80%;
+            height: 80vh;
+            background: linear-gradient(135deg, #8b4513, #5a3310);
+            box-shadow: inset 0 0 10px #4e3b31, 0 10px 20px rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            color: #fff;
+            text-align: center;
+            transform: rotateY(0deg);
+            transform-origin: left;
+            transition: transform 1s ease;
+        }
+
+        .inside-cover {
+            background: #dab28b;
+            color: #4e3b31;
+        }
+
+        .page {
+            position: absolute;
+            width: 80%;
+            height: 80vh;
+            background: linear-gradient(to bottom, #fdf9f3, #f5f2e7);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            transform-origin: left;
+            transition: transform 1s ease;
+            display: none;
+            backface-visibility: hidden;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .page.flip-left {
+            transform: rotateY(-180deg);
+        }
+
+        .cover.flip-left {
+            transform: rotateY(-180deg);
+        }
+
+        .front {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .front h2 {
+            font-size: 3em;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .front img {
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            cursor: pointer;
+        }
+
+        .front p {
+            font-size: 1.8em;
+            line-height: 1.4;
+            color: #555;
+        }
+
+        .front .impact {
+            margin-top: 20px;
+            font-size: 1.5em;
+            color: #333;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.5em;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+            color: #333;
+            transition: color 0.2s ease;
+        }
+
+        .nav-button:hover {
+            color: #000;
+        }
+
+        .left-arrow {
+            left: 2%;
+        }
+
+        .right-arrow {
+            right: 2%;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .dropdown-nav {
+            position: absolute;
+            bottom: 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .dropdown-nav select {
+            padding: 10px;
+            font-size: 1.2em;
+            border-radius: 5px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-content {
+            margin: 10% auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        @media screen and (max-width: 768px) {
+            .front h2 {
+                font-size: 2.5em;
+            }
+
+            .front img {
+                width: 100px;
+                height: 100px;
+            }
+
+            .front p {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="flipbook">
+    <div class="cover" id="cover">SSUSH13</div>
+
+    <div class="page" id="page1">
+        <div class="front">
+            <h2>Theodore Roosevelt</h2>
+            <img src="https://via.placeholder.com/150" alt="Image Placeholder" onclick="showModal(this)">
+            <p>Theodore Roosevelt was the 26th President of the United States, known for his progressive policies, trust-busting, and conservation efforts, as well as his role in the building of the Panama Canal.</p>
+            <div class="impact">Roosevelt's presidency reshaped American politics, breaking up monopolies and initiating conservation programs that preserved natural resources for future generations.</div>
+        </div>
+    </div>
+
+    <div class="page" id="page2">
+        <div class="front">
+            <h2>Muckrakers</h2>
+            <img src="https://via.placeholder.com/150" alt="Image Placeholder" onclick="showModal(this)">
+            <p>Muckrakers were investigative journalists in the early 20th century who exposed corruption and social issues, often spurring reforms during the Progressive Era.</p>
+            <div class="impact">Their work led to public awareness of corruption in politics and business, helping drive major reforms, such as improved labor laws and food safety regulations.</div>
+        </div>
+    </div>
+
+    <div class="page" id="page3">
+        <div class="front">
+            <h2>Upton Sinclair</h2>
+            <img src="https://via.placeholder.com/150" alt="Image Placeholder" onclick="showModal(this)">
+            <p> Upton Sinclair was a muckraker and author of *The Jungle*, a novel that exposed the unsanitary and dangerous conditions in the American meatpacking industry, leading to food safety reforms.  
+        </p>
+            <div class="impact">Sinclair's book prompted the passage of the Meat Inspection Act and the Pure Food and Drug Act, ensuring safer food production practices in the U.S.</div>
+        </div>
+    </div>
+
+    <div class="page" id="page4">
+        <div class="front">
+            <h2>Ida Tarbell</h2>
+            <img src="https://via.placeholder.com/150" alt="Image Placeholder" onclick="showModal(this)">
+            <p> Ida Tarbell was a pioneering journalist whose work exposed the unfair practices of the Standard Oil Company, helping to dismantle its monopoly.</p>
+            <div class="impact">Her investigative reporting contributed to the U.S. government's antitrust lawsuit, leading to the breakup of Standard Oil in 1911 and changes in corporate practices.</div>
+        </div>
+    </div>
+
+    <div class="page" id="page5">
+        <div class="front">
+            <h2>Plessy v. Ferguson</h2>
+            <img src="https://via.placeholder.com/150" alt="Image Placeholder" onclick="showModal(this)">
+            <p>Plessy v. Ferguson was an 1896 Supreme Court case that upheld racial segregation under the "separate but equal" doctrine, which remained in effect until it was overturned in 1954.</p>
+            <div class="impact">The ruling institutionalized racial segregation in public facilities, contributing to the long-lasting era of Jim Crow laws that enforced discrimination against African Americans.</div>
+        </div>
+    </div>
+
+    <button class="nav-button left-arrow hidden" id="leftArrow" onclick="prevPage()">&#9664;</button>
+    <button class="nav-button right-arrow" id="rightArrow" onclick="nextPage()">&#9654;</button>
+
+    <div class="dropdown-nav">
+        <select onchange="changeBook(this.value)">
+            <option value="main" id="ssush11">SSUSH11</option>
+            <option value="sub1" id="ssush12">SSUSH12</option>
+            <option value="sub2" selected>SSUSH13</option>
+        </select>
+    </div>
+</div>
+
+<!-- Modal Structure -->
+<div id="imageModal" class="modal">
+    <span class="close-modal" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modalImg">
+</div>
+
+<script>
+    let currentPage = 0;
+    const totalPages = 5;
+
+    function nextPage() {
+        if (currentPage < totalPages) {
+            if (currentPage === 0) {
+                document.getElementById('cover').classList.add('flip-left');
+                document.getElementById('cover').classList.add('inside-cover');
+                document.getElementById('page1').classList.add('active');
+            } else if (currentPage > 0 && currentPage < totalPages) {
+                document.getElementById('page' + currentPage).classList.add('flip-left');
+                document.getElementById('page' + (currentPage + 1)).classList.add('active');
+            }
+            currentPage++;
+            updateArrows();
+        }
+    }
+
+    function prevPage() {
+        if (currentPage > 0) {
+            if (currentPage === 1) {
+                document.getElementById('cover').classList.remove('flip-left');
+                document.getElementById('cover').classList.remove('inside-cover');
+                document.getElementById('page1').classList.remove('active');
+            } else if (currentPage > 1) {
+                document.getElementById('page' + (currentPage - 1)).classList.remove('flip-left');
+                document.getElementById('page' + currentPage).classList.remove('active');
+            }
+            currentPage--;
+            updateArrows();
+        }
+    }
+
+    function updateArrows() {
+        document.getElementById('leftArrow').classList.toggle('hidden', currentPage === 0);
+        document.getElementById('rightArrow').classList.toggle('hidden', currentPage === totalPages);
+    }
+
+    function changeBook(book) {
+        if (book === 'main') {
+            window.location.href = '../../index.html';
+        } else if (book === 'sub1') {
+            window.location.href = '../SSUSH12/SSUSH12.html';
+        }
+    }
+
+    function showModal(img) {
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImg');
+        modal.style.display = 'block';
+        modalImg.src = img.src;
+    }
+
+    function closeModal() {
+        document.getElementById('imageModal').style.display = 'none';
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') {
+            nextPage();
+        } else if (e.key === 'ArrowLeft') {
+            prevPage();
+        }
+    });
+
+    window.onload = () => {
+        document.getElementById('cover').classList.add('active');
+        updateArrows();
+    };
+</script>
+
+</body>
+</html>
